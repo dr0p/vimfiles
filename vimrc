@@ -39,6 +39,7 @@ set t_Co=256 " 256 colors
 " let g:solarized_termcolors=256
 colorscheme railscasts
 
+
 set nonumber    " line numbers aren't needed
 set ruler       " show the cursor position all the time
 set cursorline  " highlight the line of the cursor

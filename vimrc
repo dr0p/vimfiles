@@ -1,0 +1,1 @@
+/home/dr0p/.vimrc

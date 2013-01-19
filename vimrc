@@ -95,7 +95,7 @@ let mapleader=","
 nmap <leader>p pV`]=
 nmap <leader>P PV`]=
 
-
+" that's hot piece of code :)
 map <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
 map <leader>gc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
 map <leader>gm :CommandTFlush<cr>\|:CommandT app/models<cr>

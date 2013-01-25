@@ -90,10 +90,22 @@ map Q gq
 " clear the search buffer when hitting return
 :nnoremap <CR> :nohlsearch<cr>
 
+
+"Enable code folding
+set foldenable
+
+"Hide mouse when typing
+set mousehide
+
+"Shortcut to fold tags with leader (usually \) + ft
+nnoremap <leader>ft Vatzf
+
 " toggle the current fold
 :nnoremap <Space> za
 
 let mapleader=","
+nnoremap ; :
+inoremap jj <esc>
 
 " paste lines from unnamed register and fix indentation
 nmap <leader>p pV`]=
@@ -122,6 +134,7 @@ cnoremap <C-a> <Home>
 
 " ignore Rubinius, Sass cache files
 set wildignore+=tmp/**,*.rbc,.rbx,*.scssc,*.sassc
+set wildmenu
 
 nnoremap <leader><leader> <c-^>
 
@@ -139,3 +152,22 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
+"if $COLORTERM == 'gnome-terminal' 
+"  set term=gnome-256color 
+"  colorscheme railscasts 
+"else 
+"  colorscheme default 
+"endif  
+
+
+let g:html5_event_handler_attributes_complete = 0
+let g:html5_rdfa_attributes_complete = 0
+let g:html5_microdata_attributes_complete = 0
+let g:html5_aria_attributes_complete = 0
+
+" Bubble single lines
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
+" Bubble multiple lines
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]

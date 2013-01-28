@@ -31,13 +31,13 @@ map <Down>  :echo "no!"<cr>
 
 if has('gui_running')
   set background=light
+  colorscheme railscasts
 else
+  color grb256
   set background=dark
 endif
 set t_Co=256 " 256 colors
-" color grb256
 " let g:solarized_termcolors=256
-colorscheme railscasts
 
 
 set nonumber    " line numbers aren't needed

@@ -78,7 +78,7 @@ if has("autocmd")
   " Remember last location in file, but not for commit messages.
   " see :help last-position-jump
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal! g`\"" | endif
+        \| exe "normal! g`\"" | endif
 
   " mark Jekyll YAML frontmatter as comment
   au BufNewFile,BufRead *.{md,markdown,html,xml} sy match Comment /\%^---\_.\{-}---$/
@@ -108,8 +108,8 @@ nnoremap ; :
 inoremap jj <esc>
 
 " paste lines from unnamed register and fix indentation
-nmap <leader>p pV`]=
-nmap <leader>P PV`]=
+" nmap <leader>p pV`]=
+" nmap <leader>P PV`]=
 
 " that's hot piece of code :)
 map <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
@@ -152,12 +152,12 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-"if $COLORTERM == 'gnome-terminal' 
-"  set term=gnome-256color 
-"  colorscheme railscasts 
-"else 
-"  colorscheme default 
-"endif  
+" if $COLORTERM == 'gnome-terminal' 
+"   set term=gnome-256color 
+"   colorscheme railscasts 
+" else 
+"   colorscheme default 
+" endif  
 
 
 let g:html5_event_handler_attributes_complete = 0
@@ -171,3 +171,15 @@ nmap <C-Down> ddp
 " Bubble multiple lines
 vmap <C-Up> xkP`[V`]
 vmap <C-Down> xp`[V`]
+"Copy and paste from the system clipboard
+map <leader>P "+P
+map <leader>p "+p
+map <leader>Y "+Y
+map <leader>y "+y
+
+"Quick split
+map <leader>h :vspl<CR>
+map <leader>v :spl<CR>
+
+"Quick format of file
+map <leader>= gg=G<C-o><C-o>

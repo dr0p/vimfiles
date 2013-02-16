@@ -23,6 +23,8 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
+let g:ctrlp_custom_ignore = { 'dir':  '\.git$\|\.hg$\|\.svn$\|tmp\|vendor\|test\|doc\|public/images\|public/system', 'file': '\.exe$\|\.so$\|\.dll$\|\.jpe\?g$\|\.png$' }
+
 " disable cursor keys in normal mode
 map <Left>  :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
@@ -33,7 +35,8 @@ if has('gui_running')
   set background=light
   colorscheme railscasts
 else
-  color grb256
+  "color grb256
+  colorscheme railscasts
   set background=dark
 endif
 set t_Co=256 " 256 colors
@@ -183,3 +186,4 @@ map <leader>v :spl<CR>
 
 "Quick format of file
 map <leader>= gg=G<C-o><C-o>
+

@@ -32,8 +32,8 @@ map <Up>    :echo "no!"<cr>
 map <Down>  :echo "no!"<cr>
 
 if has('gui_running')
-  set background=light
-  colorscheme railscasts
+  set background=dark
+  colorscheme solarized
 else
   "color grb256
   colorscheme railscasts
@@ -187,3 +187,5 @@ map <leader>v :spl<CR>
 "Quick format of file
 map <leader>= gg=G<C-o><C-o>
 
+autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim

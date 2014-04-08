@@ -49,3 +49,9 @@
 [submodule "bundle/closetag"]
 	path = bundle/closetag
 	url = git://github.com/docunext/closetag.vim.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = git://github.com/majutsushi/tagbar.git
+[submodule "/home/paweld/.vim/bundle/vim-airline"]
+	path = /home/paweld/.vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline

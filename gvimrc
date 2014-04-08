@@ -1,4 +1,4 @@
-set guifont=Inconsolata\ 12
+set guifont=Inconsolata\ 10
 set linespace=2
 set antialias
 

@@ -52,9 +52,12 @@
 [submodule "bundle/tagbar"]
 	path = bundle/tagbar
 	url = git://github.com/majutsushi/tagbar.git
-[submodule "/home/paweld/.vim/bundle/vim-airline"]
+[submodule "bundle/vim-airline"]
 	path = bundle/vim-airline
 	url = https://github.com/bling/vim-airline
-[submodule "/home/paweld/.vim/bundle/vim-projectroot"]
+[submodule "bundle/vim-projectroot"]
 	path = bundle/vim-projectroot
 	url = git://github.com/dbakker/vim-projectroot.git
+[submodule "bundle/base16"]
+	path = bundle/base16
+	url = https://github.com/chriskempson/base16-vim.git

@@ -3,6 +3,7 @@ set nocompatible                " choose no compatibility with legacy vi
 syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
+set wrap
 filetype plugin indent on       " load file type plugins + indentation
 
 "" Whitespace
@@ -33,7 +34,7 @@ map <Down>  :echo "no!"<cr>
 
 if has('gui_running')
   set background=dark
-  colorscheme solarized
+  colorscheme base16-default
 else
   "color grb256
   colorscheme railscasts

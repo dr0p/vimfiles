@@ -1,10 +1,36 @@
-execute pathogen#infect()
-set nocompatible                " choose no compatibility with legacy vi
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'wincent/Command-T'
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-rails'
+Bundle 'chriskempson/base16-vim'
+Bundle 'mileszs/ack.vim'
+Bundle 'honza/vim-snippets'
+Bundle 'garbas/vim-snipmate'
+Bundle 'dbakker/vim-projectroot'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-commentary'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'bling/vim-airline'
+Bundle 'docunext/closetag.vim'
+Bundle 'flazz/vim-colorschemes'
+Bundle 'godlygeek/csapprox'
+Bundle 'othree/html5.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'majutsushi/tagbar'
+Bundle 'tomtom/tlib_vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+
+filetype plugin indent on       " load file type plugins + indentation
+
 syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 set wrap
-filetype plugin indent on       " load file type plugins + indentation
 
 "" Whitespace
 set nowrap                      " don't wrap lines
@@ -41,7 +67,6 @@ else
   set background=dark
 endif
 set t_Co=256 " 256 colors
-" let g:solarized_termcolors=256
 
 
 set nonumber    " line numbers aren't needed
@@ -61,7 +86,6 @@ set hidden
 set autoread
 
 function s:setupWrapping()
-  set wrap
   set wrapmargin=2
   set textwidth=80
 endfunction

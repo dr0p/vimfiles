@@ -24,6 +24,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tpope/vim-vinegar'
 
 filetype plugin indent on       " load file type plugins + indentation
 

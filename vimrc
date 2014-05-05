@@ -25,6 +25,8 @@ Bundle 'majutsushi/tagbar'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'tpope/vim-vinegar'
+Bundle 'rking/ag.vim'
+Bundle 'plasticboy/vim-markdown'
 
 filetype plugin indent on       " load file type plugins + indentation
 
@@ -217,3 +219,27 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 nnoremap <leader>dp :ProjectRootCD<cr>
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_initial_foldlevel=1
+let g:vim_markdown_no_default_key_mappings=1
+
+cmap w!! %!sudo tee > /dev/null %
+
+map <leader>r :NERDTreeFind<cr>
+map rr :NERDTreeToggle<cr>

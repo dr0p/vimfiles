@@ -721,8 +721,6 @@
     nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
   endif
 
-  nnoremap <leader><leader> <c-^>
-
   " sane regex {{{
     nnoremap / /\v
     vnoremap / /\v

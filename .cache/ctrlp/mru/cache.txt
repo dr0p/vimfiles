@@ -1,0 +1,8 @@
+/home/pawel/.vim/.git/config
+/home/pawel/.vim/vimrc
+/home/pawel/.vimrc
+/home/pawel/.vimold/vimrc
+/run/media/pawel/data/projects/profill/pbs-employees/Gemfile
+/tmp/v2dR0PC/3.fugitiveblame
+/home/pawel/.rvm/README
+/home/pawel/.ssh/allani_rsa

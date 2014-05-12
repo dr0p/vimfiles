@@ -1,0 +1,294 @@
+" vim: fdm=marker ts=2 sts=2 sw=2 fdl=0
+
+" detect OS {{{
+  let s:is_windows = has('win32') || has('win64')
+  let s:is_cygwin = has('win32unix')
+  let s:is_macvim = has('gui_macvim')
+"}}}
+
+" dotvim settings {{{
+  if !exists('g:dotvim_settings') || !exists('g:dotvim_settings.version')
+    echom 'The g:dotvim_settings and g:dotvim_settings.version variables must be defined.  Please consult the README.'
+    finish
+  endif
+
+  if g:dotvim_settings.version != 1
+    echom 'The version number in your shim does not match the distribution version.  Please consult the README changelog section.'
+    finish
+  endif
+
+  " initialize default settings
+  let s:settings = {}
+  let s:settings.default_indent = 2
+  let s:settings.max_column = 120
+  let s:settings.autocomplete_method = 'neocomplcache'
+  let s:settings.enable_cursorcolumn = 0
+  let s:settings.colorscheme = 'jellybeans'
+  if has('lua')
+    let s:settings.autocomplete_method = 'neocomplete'
+  elseif filereadable(expand("~/.vim/bundle/YouCompleteMe/python/ycm_core.*"))
+    let s:settings.autocomplete_method = 'ycm'
+  endif
+
+  if exists('g:dotvim_settings.plugin_groups')
+    let s:settings.plugin_groups = g:dotvim_settings.plugin_groups
+  else
+    let s:settings.plugin_groups = []
+    call add(s:settings.plugin_groups, 'core')
+    call add(s:settings.plugin_groups, 'web')
+    call add(s:settings.plugin_groups, 'javascript')
+    call add(s:settings.plugin_groups, 'ruby')
+    call add(s:settings.plugin_groups, 'python')
+    call add(s:settings.plugin_groups, 'scala')
+    call add(s:settings.plugin_groups, 'go')
+    call add(s:settings.plugin_groups, 'scm')
+    call add(s:settings.plugin_groups, 'editing')
+    call add(s:settings.plugin_groups, 'indents')
+    call add(s:settings.plugin_groups, 'navigation')
+    call add(s:settings.plugin_groups, 'unite')
+    call add(s:settings.plugin_groups, 'autocomplete')
+    " call add(s:settings.plugin_groups, 'textobj')
+    call add(s:settings.plugin_groups, 'misc')
+    if s:is_windows
+      call add(s:settings.plugin_groups, 'windows')
+    endif
+
+    " exclude all language-specific plugins by default
+    if !exists('g:dotvim_settings.plugin_groups_exclude')
+      let g:dotvim_settings.plugin_groups_exclude = ['web','javascript','ruby','python','go','scala']
+    endif
+    for group in g:dotvim_settings.plugin_groups_exclude
+      let i = index(s:settings.plugin_groups, group)
+      if i != -1
+        call remove(s:settings.plugin_groups, i)
+      endif
+    endfor
+
+    if exists('g:dotvim_settings.plugin_groups_include')
+      for group in g:dotvim_settings.plugin_groups_include
+        call add(s:settings.plugin_groups, group)
+      endfor
+    endif
+  endif
+
+  " override defaults with the ones specified in g:dotvim_settings
+  for key in keys(s:settings)
+    if has_key(g:dotvim_settings, key)
+      let s:settings[key] = g:dotvim_settings[key]
+    endif
+  endfor
+"}}}
+
+" setup & neobundle {{{
+  set nocompatible
+  set all& "reset everything to their defaults
+  if s:is_windows
+    set rtp+=~/.vim
+  endif
+  set rtp+=~/.vim/bundle/neobundle.vim
+  call neobundle#rc(expand('~/.vim/bundle/'))
+  NeoBundleFetch 'Shougo/neobundle.vim'
+"}}}
+
+" functions {{{
+  function! Preserve(command) "{{{
+    " preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " do the business:
+    execute a:command
+    " clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+  endfunction "}}}
+  function! StripTrailingWhitespace() "{{{
+    call Preserve("%s/\\s\\+$//e")
+  endfunction "}}}
+  function! EnsureExists(path) "{{{
+    if !isdirectory(expand(a:path))
+      call mkdir(expand(a:path))
+    endif
+  endfunction "}}}
+  function! CloseWindowOrKillBuffer() "{{{
+    let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+
+    " never bdelete a nerd tree
+    if matchstr(expand("%"), 'NERD') == 'NERD'
+      wincmd c
+      return
+    endif
+
+    if number_of_windows_to_this_buffer > 1
+      wincmd c
+    else
+      bdelete
+    endif
+  endfunction "}}}
+"}}}
+
+" base configuration {{{
+  set timeoutlen=300                                  "mapping timeout
+  set ttimeoutlen=50                                  "keycode timeout
+
+  set mouse=a                                         "enable mouse
+  set mousehide                                       "hide when characters are typed
+  set history=1000                                    "number of command lines to remember
+  set ttyfast                                         "assume fast terminal connection
+  set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
+  set encoding=utf-8                                  "set encoding for text
+  if exists('$TMUX')
+    set clipboard=
+  else
+    set clipboard=unnamed                             "sync with OS clipboard
+  endif
+  set hidden                                          "allow buffer switching without saving
+  set autoread                                        "auto reload if file saved externally
+  set fileformats+=mac                                "add mac to auto-detection of file format line endings
+  set nrformats-=octal                                "always assume decimal numbers
+  set showcmd
+  set tags=tags;/
+  set showfulltag
+  set modeline
+  set modelines=5
+
+  if s:is_windows && !s:is_cygwin
+    " ensure correct shell in gvim
+    set shell=c:\windows\system32\cmd.exe
+  endif
+
+  " whitespace
+  set backspace=indent,eol,start                      "allow backspacing everything in insert mode
+  set autoindent                                      "automatically indent to match adjacent lines
+  set expandtab                                       "spaces instead of tabs
+  set smarttab                                        "use shiftwidth to enter tabs
+  let &tabstop=s:settings.default_indent              "number of spaces per tab for display
+  let &softtabstop=s:settings.default_indent          "number of spaces per tab in insert mode
+  let &shiftwidth=s:settings.default_indent           "number of spaces when indenting
+  set list                                            "highlight whitespace
+  set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
+  set shiftround
+  set linebreak
+  let &showbreak='↪ '
+
+  set scrolloff=1                                     "always show content after scroll
+  set scrolljump=5                                    "minimum number of lines to scroll
+  set display+=lastline
+  set wildmenu                                        "show list for autocomplete
+  set wildmode=list:full
+  set wildignorecase
+  set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+
+  set splitbelow
+  set splitright
+
+  " disable sounds
+  set noerrorbells
+  set novisualbell
+  set t_vb=
+
+  " searching
+  set hlsearch                                        "highlight searches
+  set incsearch                                       "incremental searching
+  set ignorecase                                      "ignore case for searching
+  set smartcase                                       "do case-sensitive if there's a capital letter
+  if executable('ack')
+    set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+    set grepformat=%f:%l:%c:%m
+  endif
+  if executable('ag')
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+  endif
+
+  " vim file/folder management {{{
+    " persistent undo
+    if exists('+undofile')
+      set undofile
+      set undodir=~/.vim/.cache/undo
+    endif
+
+    " backups
+    set backup
+    set backupdir=~/.vim/.cache/backup
+
+    " swap files
+    set directory=~/.vim/.cache/swap
+    set noswapfile
+
+    call EnsureExists('~/.vim/.cache')
+    call EnsureExists(&undodir)
+    call EnsureExists(&backupdir)
+    call EnsureExists(&directory)
+  "}}}
+
+  let mapleader = ","
+  let g:mapleader = ","
+"}}}
+
+" ui configuration {{{
+  set showmatch                                       "automatically highlight matching braces/brackets/etc.
+  set matchtime=2                                     "tens of a second to show matching parentheses
+  set number
+  set lazyredraw
+  set laststatus=2
+  set noshowmode
+  set foldenable                                      "enable folds by default
+  set foldmethod=syntax                               "fold via syntax of files
+  set foldlevelstart=99                               "open all folds by default
+  let g:xml_syntax_folding=1                          "enable xml folding
+
+  set cursorline
+  autocmd WinLeave * setlocal nocursorline
+  autocmd WinEnter * setlocal cursorline
+  let &colorcolumn=s:settings.max_column
+  if s:settings.enable_cursorcolumn
+    set cursorcolumn
+    autocmd WinLeave * setlocal nocursorcolumn
+    autocmd WinEnter * setlocal cursorcolumn
+  endif
+
+  if has('conceal')
+    set conceallevel=1
+    set listchars+=conceal:Δ
+  endif
+
+  if has('gui_running')
+    " open maximized
+    set lines=999 columns=9999
+    if s:is_windows
+      autocmd GUIEnter * simalt ~x
+    endif
+
+    set guioptions+=t                                 "tear off menu items
+    set guioptions-=T                                 "toolbar icons
+
+    if s:is_macvim
+      set gfn=Ubuntu_Mono:h14
+      set transparency=2
+    endif
+
+    if s:is_windows
+      set gfn=Ubuntu_Mono:h10
+    endif
+
+    if has('gui_gtk')
+      set gfn=Ubuntu\ Mono\ 11
+    endif
+  else
+    if $COLORTERM == 'gnome-terminal'
+      set t_Co=256 "why you no tell me correct colors?!?!
+    endif
+    if $TERM_PROGRAM == 'iTerm.app'
+      " different cursors for insert vs normal mode
+      if exists('$TMUX')
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+      else
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+      endif
+    endif
+  endif
+"}}}
+

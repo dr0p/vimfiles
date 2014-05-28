@@ -55,7 +55,7 @@
 
     " exclude all language-specific plugins by default
     if !exists('g:dotvim_settings.plugin_groups_exclude')
-      let g:dotvim_settings.plugin_groups_exclude = ['web','javascript','ruby','python','go','scala']
+      let g:dotvim_settings.plugin_groups_exclude = ['python','go','scala']
     endif
     for group in g:dotvim_settings.plugin_groups_exclude
       let i = index(s:settings.plugin_groups, group)
@@ -267,7 +267,12 @@
     endif
 
     set guioptions+=t                                 "tear off menu items
+    set guioptions-=m                                 " remove menu
     set guioptions-=T                                 "toolbar icons
+    set guioptions-=r                                 " remove righthand scrollbar
+    set guioptions-=R
+    set guioptions-=l                                 " remove lefthand scrollbar
+    set guioptions-=L
 
     if s:is_macvim
       set gfn=Ubuntu_Mono:h14
@@ -399,7 +404,7 @@
       nnoremap <silent> <leader>gd :Gdiff<CR>
       nnoremap <silent> <leader>gc :Gcommit<CR>
       nnoremap <silent> <leader>gb :Gblame<CR>
-      nnoremap <silent> <leader>gl :Glog<CR>
+      nnoremap <silent> <leader>gl :Git pull --rebase<CR>
       nnoremap <silent> <leader>gp :Git push<CR>
       nnoremap <silent> <leader>gw :Gwrite<CR>
       nnoremap <silent> <leader>gr :Gremove<CR>

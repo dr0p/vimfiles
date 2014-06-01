@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/run/media/pawel/data/projects/profill/pbs-clients/.git'
-let g:netrw_dirhist_2='/run/media/pawel/data/projects/profill/pbs-clients'
-let g:netrw_dirhist_3='/run/media/pawel/data/projects/profill'
-let g:netrw_dirhist_4='/run/media/pawel/data/projects/profill/pbs-clients'
-let g:netrw_dirhist_5='/run/media/pawel/data/projects/profill'
-let g:netrw_dirhist_6='/run/media/pawel/data/projects/profill/pbs-employees'
-let g:netrw_dirhist_7='/run/media/pawel/data/projects/profill/pbs-clients'
